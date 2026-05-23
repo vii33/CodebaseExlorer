@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MiniClaw Documentation</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__inner">
+        <p class="eyebrow">Codebase Explorer</p>
+        <h1>MiniClaw Documentation</h1>
+        <p class="lede">
+          Read the generated Markdown in a cleaner format and preview the linked Mermaid diagrams in one place.
+        </p>
+        <nav class="hero__links">
+          <a href="../miniclaw.md">Markdown source</a>
+          <a href="../diagrams/miniclaw-architecture.mmd">Architecture diagram source</a>
+          <a href="../diagrams/miniclaw-scheduler-flow.mmd">Scheduler diagram source</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel panel--sticky">
+        <h2>View tips</h2>
+        <ul>
+          <li>Serve the repository with a static file server for best results.</li>
+          <li>The page renders directly from the checked-in Markdown and Mermaid files.</li>
+          <li>Use the source links above if you want the raw files.</li>
+        </ul>
+      </aside>
+
+      <section class="content">
+        <section class="panel">
+          <div class="panel__header">
+            <h2>Architecture overview</h2>
+            <a href="../diagrams/miniclaw-architecture.mmd">Open source</a>
+          </div>
+          <pre class="mermaid" id="architecture-diagram"></pre>
+        </section>
+
+        <section class="panel">
+          <div class="panel__header">
+            <h2>Scheduler flow</h2>
+            <a href="../diagrams/miniclaw-scheduler-flow.mmd">Open source</a>
+          </div>
+          <pre class="mermaid" id="scheduler-diagram"></pre>
+        </section>
+
+        <article class="panel markdown-body">
+          <div class="panel__header">
+            <h2>Generated Markdown</h2>
+            <a href="../miniclaw.md">Open source</a>
+          </div>
+          <div id="markdown-content">
+            <p class="status">Loading documentation…</p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
