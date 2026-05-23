@@ -38,6 +38,10 @@ MiniClaw is organized around three main concerns:
    - `crons/tasks.yaml` is the source of truth for scheduled work
    - `.miniclaw/task-state.json` stores `last_run` and `last_error`
 
+4. **Skill instructions**
+   - `TOOLS.md` defines tool and skill usage guidance for the assistant
+   - `AGENTS.md` supplies the operating rules that those skills must follow
+
 ## Diagrams
 
 - [Architecture overview](diagrams/miniclaw-architecture.mmd)
@@ -144,6 +148,14 @@ Defines the assistant's operating rules:
 - security boundaries
 - Opencode integration expectations
 - task execution rules
+
+### `TOOLS.md`
+
+Defines the assistant's tool and skill-instruction layer:
+
+- when the assistant should use available tools
+- how shell and automation actions are constrained
+- what behaviors are expected when invoking capabilities
 
 ### `crons/tasks.yaml`
 
