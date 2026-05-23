@@ -1,0 +1,20 @@
+flowchart TD
+    A[Assistant identity and behavior] --> B[MiniClaw runtime]
+    C[Memory management] --> B
+    D[Automation] --> B
+
+    A --> A1[IDENTITY.md]
+    A --> A2[AGENTS.md]
+    A --> A3[SOUL.md]
+    A --> A4[USER.md]
+    A --> A5[TOOLS.md]
+
+    C --> C1[MEMORY.md]
+    C --> C2[memory/history]
+    C --> C3[memory/knowledge]
+    C --> C4[memory/facts.md]
+
+    D --> D1[scripts/export-sessions.sh]
+    D --> D2[scripts/task-loop.js]
+    D --> D3[crons/tasks.yaml]
+    D --> D4[.miniclaw/task-state.json]

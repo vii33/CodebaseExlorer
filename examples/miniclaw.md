@@ -38,6 +38,11 @@ MiniClaw is organized around three main concerns:
    - `crons/tasks.yaml` is the source of truth for scheduled work
    - `.miniclaw/task-state.json` stores `last_run` and `last_error`
 
+## Diagrams
+
+- [Architecture overview](diagrams/miniclaw-architecture.mmd)
+- [Scheduler flow](diagrams/miniclaw-scheduler-flow.mmd)
+
 ## How the system works
 
 ### 1. Session export
