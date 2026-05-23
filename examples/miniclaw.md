@@ -17,7 +17,7 @@ The project goal is to keep the assistant simple, inspectable, and easy to evolv
 
 ## Core architecture
 
-MiniClaw is organized around three main concerns:
+MiniClaw is organized around four main concerns:
 
 1. **Assistant identity and behavior**
    - `IDENTITY.md`
