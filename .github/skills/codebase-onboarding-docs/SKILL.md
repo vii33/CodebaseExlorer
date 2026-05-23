@@ -470,7 +470,7 @@ All Mermaid diagrams must be syntactically valid and enclosed in fenced code blo
 
 - Use strict Markdown only
 - Use **bold text** for important filenames, directories, variables, and commands
-- Use relative paths only, such as **/src/api** or **/db/schema.sql**
+- Use relative paths only, such as **src/api** or **db/schema.sql**
 - Use concise paragraphs
 - Use bullet lists for scan-friendly structure
 - Use Markdown tables where comparison or structure helps
