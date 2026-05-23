@@ -120,8 +120,14 @@ a {
   gap: 1.25rem;
 }
 
-.mermaid {
-  overflow-x: auto;
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: rgba(11, 16, 32, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0.5rem;
 }
 
 .status {

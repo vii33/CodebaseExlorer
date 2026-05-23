@@ -27,7 +27,7 @@
         <h2>View tips</h2>
         <ul>
           <li>Serve the repository with a static file server for best results.</li>
-          <li>The page renders directly from the checked-in Markdown and Mermaid files.</li>
+          <li>This page is a static HTML view generated from the checked-in Markdown and Mermaid sources.</li>
           <li>Use the source links above if you want the raw files.</li>
         </ul>
       </aside>
@@ -38,7 +38,11 @@
             <h2>Architecture overview</h2>
             <a href="../diagrams/miniclaw-architecture.mmd">Open source</a>
           </div>
-          <pre class="mermaid" id="architecture-diagram"></pre>
+          <img
+            class="diagram"
+            src="./miniclaw-architecture.svg"
+            alt="MiniClaw architecture overview diagram"
+          >
         </section>
 
         <section class="panel">
@@ -46,7 +50,11 @@
             <h2>Scheduler flow</h2>
             <a href="../diagrams/miniclaw-scheduler-flow.mmd">Open source</a>
           </div>
-          <pre class="mermaid" id="scheduler-diagram"></pre>
+          <img
+            class="diagram"
+            src="./miniclaw-scheduler-flow.svg"
+            alt="MiniClaw scheduler flow diagram"
+          >
         </section>
 
         <article class="panel markdown-body">
@@ -54,13 +62,316 @@
             <h2>Generated Markdown</h2>
             <a href="../miniclaw.md">Open source</a>
           </div>
-          <div id="markdown-content">
-            <p class="status">Loading documentation…</p>
-          </div>
+          <h1>MiniClaw Documentation</h1>
+
+          <p>
+            This page is based on the generated documentation for
+            <a href="https://github.com/vii33/MiniClaw"><code>vii33/MiniClaw</code></a>,
+            using the current <code>main</code> branch structure and source files.
+          </p>
+
+          <h2>What MiniClaw is</h2>
+          <p>
+            MiniClaw is a lightweight, Markdown-first AI assistant built around
+            <a href="https://opencode.ai">Opencode</a>. Instead of using a database-heavy architecture,
+            it keeps most of its persistent state in plain files:
+          </p>
+          <ul>
+            <li>prompt and behavior files in the repo root</li>
+            <li>durable memory in <code>MEMORY.md</code></li>
+            <li>raw daily session exports in <code>memory/history/</code></li>
+            <li>weekly summaries in <code>memory/knowledge/</code></li>
+            <li>cron task definitions in <code>crons/tasks.yaml</code></li>
+            <li>runtime scheduler state in <code>.miniclaw/task-state.json</code></li>
+          </ul>
+          <p>
+            The project goal is to keep the assistant simple, inspectable, and easy to evolve with
+            normal file-based workflows.
+          </p>
+
+          <h2>Core architecture</h2>
+          <p>MiniClaw is organized around four main concerns:</p>
+          <ol>
+            <li>
+              <strong>Assistant identity and behavior</strong>
+              <ul>
+                <li><code>IDENTITY.md</code></li>
+                <li><code>AGENTS.md</code></li>
+                <li><code>SOUL.md</code></li>
+                <li><code>USER.md</code></li>
+                <li><code>TOOLS.md</code></li>
+              </ul>
+            </li>
+            <li>
+              <strong>Memory management</strong>
+              <ul>
+                <li><code>MEMORY.md</code> for always-loaded distilled memory</li>
+                <li><code>memory/history/YYYY-MM-DD.md</code> for raw daily history</li>
+                <li><code>memory/knowledge/weekly-YYYY-Www.md</code> for higher-level summaries</li>
+                <li><code>memory/facts.md</code> as a scratch pad</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Automation</strong>
+              <ul>
+                <li><code>scripts/export-sessions.sh</code> exports sessions from Opencode</li>
+                <li><code>scripts/task-loop.js</code> polls for due tasks and executes them</li>
+                <li><code>crons/tasks.yaml</code> is the source of truth for scheduled work</li>
+                <li><code>.miniclaw/task-state.json</code> stores <code>last_run</code> and <code>last_error</code></li>
+              </ul>
+            </li>
+            <li>
+              <strong>Skill instructions</strong>
+              <ul>
+                <li><code>TOOLS.md</code> defines tool and skill usage guidance for the assistant</li>
+                <li><code>AGENTS.md</code> supplies the operating rules that those skills must follow</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h2>Diagrams</h2>
+          <ul>
+            <li><a href="../diagrams/miniclaw-architecture.mmd">Architecture overview source</a></li>
+            <li><a href="../diagrams/miniclaw-scheduler-flow.mmd">Scheduler flow source</a></li>
+          </ul>
+
+          <h2>How the system works</h2>
+
+          <h3>1. Session export</h3>
+          <p>The export script:</p>
+          <ul>
+            <li>checks the Opencode health endpoint first</li>
+            <li>fetches sessions for a target day</li>
+            <li>writes a Markdown history file to <code>memory/history/YYYY-MM-DD.md</code></li>
+            <li>appends a <code>## Summary</code> placeholder for later analysis</li>
+          </ul>
+          <p>Actual API usage in the script is:</p>
+          <ul>
+            <li><code>GET /global/health</code></li>
+            <li><code>GET /experimental/session</code></li>
+            <li><code>GET /session/:id/message</code></li>
+          </ul>
+          <pre><code>./scripts/export-sessions.sh
+./scripts/export-sessions.sh --date 2026-03-07
+./scripts/export-sessions.sh --host 127.0.0.1 --port 4096</code></pre>
+
+          <h3>2. Scheduled task execution</h3>
+          <p>
+            The scheduler is implemented in <code>scripts/task-loop.js</code>. It is a polling loop,
+            not a system cron integration.
+          </p>
+          <p>Its runtime flow is:</p>
+          <ol>
+            <li>read <code>crons/tasks.yaml</code></li>
+            <li>parse and validate enabled tasks</li>
+            <li>read <code>.miniclaw/task-state.json</code></li>
+            <li>decide which tasks are due for the current minute</li>
+            <li>skip tasks that already ran in that exact minute slot</li>
+            <li>execute each due task</li>
+            <li>update runtime state on success or failure</li>
+          </ol>
+          <p>Supported task kinds:</p>
+          <ul>
+            <li><code>shell</code> — runs a restricted local command</li>
+            <li><code>opencode</code> — sends an instruction to <code>opencode run</code></li>
+          </ul>
+          <pre><code>node scripts/task-loop.js
+node scripts/task-loop.js --once
+node scripts/task-loop.js --once --dry-run --at 2026-03-07T23:15:00Z</code></pre>
+
+          <h3>3. Memory lifecycle</h3>
+          <p>MiniClaw intentionally separates memory into layers:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Storage</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Distilled memory</td>
+                <td><code>MEMORY.md</code></td>
+                <td>Stable preferences, decisions, lessons</td>
+              </tr>
+              <tr>
+                <td>Raw daily history</td>
+                <td><code>memory/history/YYYY-MM-DD.md</code></td>
+                <td>Full day-level transcript record</td>
+              </tr>
+              <tr>
+                <td>Weekly knowledge</td>
+                <td><code>memory/knowledge/weekly-YYYY-Www.md</code></td>
+                <td>Cross-day summaries</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            This keeps the always-loaded context small while preserving detailed history for later review.
+          </p>
+
+          <h2>Repository structure</h2>
+          <pre><code>MiniClaw/
+├── AGENTS.md
+├── IDENTITY.md
+├── MEMORY.md
+├── README.md
+├── SOUL.md
+├── TOOLS.md
+├── USER.md
+├── crons/
+│   └── tasks.yaml
+├── docs/
+│   └── tasks-memory-architecture.md
+├── memory/
+│   ├── facts.md
+│   ├── history/
+│   └── knowledge/
+├── scripts/
+│   ├── export-sessions.sh
+│   └── task-loop.js
+└── .miniclaw/
+    └── task-state.json</code></pre>
+
+          <h2>Important files</h2>
+
+          <h3><code>AGENTS.md</code></h3>
+          <p>Defines the assistant's operating rules:</p>
+          <ul>
+            <li>startup loading order</li>
+            <li>memory update discipline</li>
+            <li>security boundaries</li>
+            <li>Opencode integration expectations</li>
+            <li>task execution rules</li>
+          </ul>
+
+          <h3><code>TOOLS.md</code></h3>
+          <p>Defines the assistant's tool and skill-instruction layer:</p>
+          <ul>
+            <li>when the assistant should use available tools</li>
+            <li>how shell and automation actions are constrained</li>
+            <li>what behaviors are expected when invoking capabilities</li>
+          </ul>
+
+          <h3><code>crons/tasks.yaml</code></h3>
+          <p>Defines scheduled jobs as YAML entries under the top-level <code>tasks:</code> list.</p>
+          <p>Current built-in tasks:</p>
+          <ul>
+            <li><code>daily-export</code></li>
+            <li><code>daily-analysis</code></li>
+            <li><code>weekly-review</code></li>
+          </ul>
+          <p>
+            The file also stores prompt text for <code>opencode</code> tasks, which means task behavior is
+            partly configuration-driven.
+          </p>
+
+          <h3><code>scripts/task-loop.js</code></h3>
+          <p>This is the active scheduler implementation today. Key behaviors include:</p>
+          <ul>
+            <li>custom task YAML parsing and validation</li>
+            <li>cron matching</li>
+            <li>duplicate-run protection per minute slot</li>
+            <li>model selection with fallback</li>
+            <li>shell command restrictions</li>
+            <li>state file updates</li>
+          </ul>
+          <p>
+            Notably, the backlog mentions a future Go rewrite, but the current implementation is JavaScript.
+          </p>
+
+          <h3><code>docs/tasks-memory-architecture.md</code></h3>
+          <p>This is the most complete internal design document in the MiniClaw repo. It explains:</p>
+          <ul>
+            <li>how tasks are stored</li>
+            <li>how runtime state is tracked</li>
+            <li>where outputs appear</li>
+            <li>why the project uses the Opencode HTTP interface</li>
+            <li>how the memory layers are intended to stay clean over time</li>
+          </ul>
+
+          <h2>Configuration</h2>
+          <p>MiniClaw is configured primarily through environment variables and local files.</p>
+          <p>Relevant environment variables:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Default</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>OPENCODE_HOST</code></td>
+                <td><code>127.0.0.1</code></td>
+                <td>Opencode host</td>
+              </tr>
+              <tr>
+                <td><code>OPENCODE_PORT</code></td>
+                <td><code>4096</code></td>
+                <td>Opencode port</td>
+              </tr>
+              <tr>
+                <td><code>OPENCODE_PASSWORD</code></td>
+                <td>unset</td>
+                <td>Optional basic-auth password</td>
+              </tr>
+              <tr>
+                <td><code>OPENCODE_USERNAME</code></td>
+                <td><code>opencode</code></td>
+                <td>Basic-auth username</td>
+              </tr>
+              <tr>
+                <td><code>OPENCODE_TASK_MODEL</code></td>
+                <td><code>zen/minimax2.5-free</code></td>
+                <td>Scheduler model override</td>
+              </tr>
+              <tr>
+                <td><code>TASK_LOOP_POLL_SECONDS</code></td>
+                <td><code>60</code></td>
+                <td>Scheduler poll interval</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Secrets are expected in a repo-root <code>.env</code> file, with <code>.env.example</code>
+            documenting the expected keys.
+          </p>
+
+          <h2>Current implementation status</h2>
+          <p>
+            Based on <code>implementation-backlog.md</code>, MiniClaw is partially implemented.
+          </p>
+          <p>Working pieces:</p>
+          <ul>
+            <li>file-based memory layout</li>
+            <li>session export script</li>
+            <li>poll-based task scheduler</li>
+            <li>configurable model selection</li>
+          </ul>
+          <p>Still listed as incomplete or needing hardening:</p>
+          <ul>
+            <li>session chat loop</li>
+            <li>stronger scheduler locking and tests</li>
+            <li>richer run logging and observability</li>
+            <li>better handling of large or invalid task outputs</li>
+            <li>possible future Go scheduler rewrite</li>
+            <li>web UI</li>
+          </ul>
+
+          <h2>Practical summary</h2>
+          <p>MiniClaw is best understood as a small assistant runtime built from plain files plus a scheduler:</p>
+          <ul>
+            <li>Markdown files define identity, memory, and user context</li>
+            <li>Opencode supplies chat and session infrastructure</li>
+            <li>shell and Opencode tasks automate export and summarization</li>
+            <li>scheduler state is intentionally lightweight</li>
+          </ul>
+          <p>The design favors transparency and hackability over heavy infrastructure.</p>
         </article>
       </section>
     </main>
-
-    <script type="module" src="./app.js"></script>
   </body>
 </html>
