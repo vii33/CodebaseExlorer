@@ -1,3 +1,3 @@
-# CodebaseExlorer
+# Codebase Explorer
 
-Generated documentation examples live in `/home/runner/work/CodebaseExlorer/CodebaseExlorer/examples/`.
+Generated documentation examples live in `examples/`.
