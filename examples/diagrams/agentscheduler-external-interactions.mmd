@@ -1,0 +1,15 @@
+flowchart LR
+  user[Local operator]
+  github[GitHub / Codespaces]
+  miniclaw[MiniClaw Scheduler]
+  shell[Allowlisted local scripts]
+  agents[Agent CLIs<br/>Opencode, Copilot, Claude, Codex, Pi]
+  opencode[Opencode HTTP API]
+  fs[Local filesystem]
+
+  user -->|runs go task-loop| miniclaw
+  github -->|hosts source/dev env| miniclaw
+  miniclaw -->|executes| shell
+  miniclaw -->|non-interactive prompts| agents
+  shell -->|exports sessions| opencode
+  miniclaw -->|reads/writes| fs

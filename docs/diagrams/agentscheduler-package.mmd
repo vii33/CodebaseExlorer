@@ -1,0 +1,15 @@
+flowchart TB
+  repo[MiniClaw Repository]
+  scheduler[cmd/task-loop<br/>Go scheduler]
+  config[crons/tasks.yaml<br/>Task configuration]
+  memory[Memory Files<br/>MEMORY.md + memory/]
+  scripts[scripts/export-sessions.sh]
+  docs[README + docs/]
+  runtime[(miniclaw.db<br/>task-loop.lock)]
+
+  repo --> scheduler
+  repo --> config
+  repo --> memory
+  repo --> scripts
+  repo --> docs
+  scheduler --> runtime
