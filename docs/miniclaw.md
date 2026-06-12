@@ -1,5 +1,29 @@
 # MiniClaw Documentation
 
+## Codebase purpose
+
+MiniClaw is a lightweight, Markdown-first AI assistant runtime that stores identity, memory, scheduled tasks, and session exports in plain files while using Opencode for interactive AI sessions and automation.
+
+## Technology profile
+
+The codebase is mostly Markdown configuration and documentation, with JavaScript running on Node.js for the polling scheduler, shell scripts for session export, YAML for cron-like task definitions, JSON for runtime task state, Opencode as the AI/session platform, local filesystem storage instead of a database, static HTML/CSS for published documentation, and GitHub Pages-style deployment for the checked-in site.
+
+## High-level package diagram
+
+[Package diagram Mermaid source](diagrams/miniclaw-package.mmd)
+
+## High-level external interaction diagram
+
+[External interaction diagram Mermaid source](diagrams/miniclaw-external-interactions.mmd)
+
+## High-level internal data-flow diagram
+
+[Internal data-flow diagram Mermaid source](diagrams/miniclaw-internal-data-flow.mmd)
+
+## High-level data-model diagram
+
+[Data-model diagram Mermaid source](diagrams/miniclaw-data-model.mmd)
+
 This file contains generated documentation for [`vii33/MiniClaw`](https://github.com/vii33/MiniClaw), based on the current `main` branch structure and source files.
 
 ## What MiniClaw is
@@ -44,8 +68,10 @@ MiniClaw is organized around four main concerns:
 
 ## Diagrams
 
-- [Architecture overview](diagrams/miniclaw-architecture.mmd)
-- [Scheduler flow](diagrams/miniclaw-scheduler-flow.mmd)
+- [Package diagram](diagrams/miniclaw-package.mmd)
+- [External interaction diagram](diagrams/miniclaw-external-interactions.mmd)
+- [Internal data-flow diagram](diagrams/miniclaw-internal-data-flow.mmd)
+- [Data-model diagram](diagrams/miniclaw-data-model.mmd)
 
 ## How the system works
 

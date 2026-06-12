@@ -209,3 +209,18 @@ a {
     position: static;
   }
 }
+
+
+.mermaid {
+  display: block;
+  width: 100%;
+  min-height: 180px;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.diagram-note {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
