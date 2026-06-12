@@ -12,12 +12,14 @@
         <p class="eyebrow">Codebase Explorer</p>
         <h1>MiniClaw Documentation</h1>
         <p class="lede">
-          Read the generated Markdown in a cleaner format and preview the linked Mermaid diagrams in one place.
+          Read the generated report with Mermaid diagrams loaded from linked source files.
         </p>
         <nav class="hero__links">
           <a href="../miniclaw.md">Markdown source</a>
-          <a href="../diagrams/miniclaw-architecture.mmd">Architecture diagram source</a>
-          <a href="../diagrams/miniclaw-scheduler-flow.mmd">Scheduler diagram source</a>
+          <a href="../diagrams/miniclaw-package.mmd">Package diagram source</a>
+          <a href="../diagrams/miniclaw-external-interactions.mmd">External interaction source</a>
+          <a href="../diagrams/miniclaw-internal-data-flow.mmd">Internal data-flow source</a>
+          <a href="../diagrams/miniclaw-data-model.mmd">Data-model source</a>
         </nav>
       </div>
     </header>
@@ -33,36 +35,42 @@
       </aside>
 
       <section class="content">
-        <section class="panel">
-          <div class="panel__header">
-            <h2>Architecture overview</h2>
-            <a href="../diagrams/miniclaw-architecture.mmd">Open source</a>
-          </div>
-          <img
-            class="diagram"
-            src="./miniclaw-architecture.svg"
-            alt="MiniClaw architecture overview diagram"
-          >
-        </section>
-
-        <section class="panel">
-          <div class="panel__header">
-            <h2>Scheduler flow</h2>
-            <a href="../diagrams/miniclaw-scheduler-flow.mmd">Open source</a>
-          </div>
-          <img
-            class="diagram"
-            src="./miniclaw-scheduler-flow.svg"
-            alt="MiniClaw scheduler flow diagram"
-          >
-        </section>
-
         <article class="panel markdown-body">
-          <div class="panel__header">
-            <h2>Generated Markdown</h2>
-            <a href="../miniclaw.md">Open source</a>
-          </div>
           <h1>MiniClaw Documentation</h1>
+
+          <h2>Codebase purpose</h2>
+          <p>
+            MiniClaw is a lightweight, Markdown-first AI assistant runtime that stores identity, memory,
+            scheduled tasks, and session exports in plain files while using Opencode for interactive AI
+            sessions and automation.
+          </p>
+
+          <h2>Technology profile</h2>
+          <p>
+            The codebase is mostly Markdown configuration and documentation, with JavaScript running on
+            Node.js for the polling scheduler, shell scripts for session export, YAML for cron-like task
+            definitions, JSON for runtime task state, Opencode as the AI/session platform, local filesystem
+            storage instead of a database, static HTML/CSS for published documentation, and GitHub Pages-style
+            deployment for the checked-in site.
+          </p>
+
+          <h2>High-level package diagram</h2>
+          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-package.mmd">Loading package diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/miniclaw-package.mmd">Open Mermaid source</a></p>
+
+          <h2>High-level external interaction diagram</h2>
+          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-external-interactions.mmd">Loading external interaction diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/miniclaw-external-interactions.mmd">Open Mermaid source</a></p>
+
+          <h2>High-level internal data-flow diagram</h2>
+          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-internal-data-flow.mmd">Loading internal data-flow diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/miniclaw-internal-data-flow.mmd">Open Mermaid source</a></p>
+
+          <h2>High-level data-model diagram</h2>
+          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-data-model.mmd">Loading data-model diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/miniclaw-data-model.mmd">Open Mermaid source</a></p>
+
+          <p class="source-link"><a href="../miniclaw.md">Open Markdown source</a></p>
 
           <p>
             This page is based on the generated documentation for
@@ -131,8 +139,10 @@
 
           <h2>Diagrams</h2>
           <ul>
-            <li><a href="../diagrams/miniclaw-architecture.mmd">Architecture overview source</a></li>
-            <li><a href="../diagrams/miniclaw-scheduler-flow.mmd">Scheduler flow source</a></li>
+            <li><a href="../diagrams/miniclaw-package.mmd">Package diagram source</a></li>
+            <li><a href="../diagrams/miniclaw-external-interactions.mmd">External interaction diagram source</a></li>
+            <li><a href="../diagrams/miniclaw-internal-data-flow.mmd">Internal data-flow diagram source</a></li>
+            <li><a href="../diagrams/miniclaw-data-model.mmd">Data-model diagram source</a></li>
           </ul>
 
           <h2>How the system works</h2>
@@ -373,5 +383,26 @@ node scripts/task-loop.js --once --dry-run --at 2026-03-07T23:15:00Z</code></pre
         </article>
       </section>
     </main>
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+      const diagramBlocks = document.querySelectorAll("pre.mermaid[data-mermaid-src]");
+      await Promise.all(Array.from(diagramBlocks).map(async (block) => {
+        try {
+          const response = await fetch(block.dataset.mermaidSrc);
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          block.textContent = await response.text();
+        } catch (error) {
+          block.textContent = `Unable to load Mermaid diagram from ${block.dataset.mermaidSrc}: ${error.message}`;
+          block.classList.add("mermaid--error");
+        }
+      }));
+
+      mermaid.initialize({ startOnLoad: false, theme: "dark", securityLevel: "strict" });
+      await mermaid.run({ querySelector: "pre.mermaid:not(.mermaid--error)" });
+    </script>
   </body>
 </html>

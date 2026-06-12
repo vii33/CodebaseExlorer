@@ -1,0 +1,7 @@
+flowchart LR
+    U[Maintainer or User] --> M[MiniClaw Workspace]
+    M --> O[Opencode Service]
+    M --> FS[Local Filesystem]
+    T[System Timer or Shell] --> M
+    M --> R[Static Documentation Site]
+    R --> V[Documentation Reader]
