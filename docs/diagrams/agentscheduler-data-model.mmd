@@ -1,0 +1,37 @@
+erDiagram
+  TASK_DEFINITION {
+    string id PK
+    bool enabled
+    string schedule
+    string missed
+    string kind
+    string command_or_instruction
+    string model
+  }
+  TASK_RUN {
+    int id PK
+    string task_id UK
+    string scheduled_for UK
+    string started_at
+    string finished_at
+    string status
+    string error
+    int duration_ms
+  }
+  SCHEDULER_STATE {
+    string key PK
+    string value
+  }
+  MEMORY_FILE {
+    string path PK
+    string role
+    string cadence
+  }
+  LOCK_FILE {
+    int pid PK
+    string started_at
+  }
+
+  TASK_DEFINITION ||--o{ TASK_RUN : produces
+  SCHEDULER_STATE ||--o{ TASK_RUN : gates
+  TASK_DEFINITION ||--o{ MEMORY_FILE : may_update

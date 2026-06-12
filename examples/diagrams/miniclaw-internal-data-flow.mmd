@@ -1,9 +1,0 @@
-flowchart TD
-    A[Task YAML] --> B[Scheduler Loop]
-    C[Runtime State JSON] --> B
-    B --> D{Due Task?}
-    D -->|shell| E[Run Local Command]
-    D -->|opencode| F[Run Opencode Prompt]
-    E --> G[Memory and History Files]
-    F --> G
-    G --> C

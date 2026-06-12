@@ -3,406 +3,199 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MiniClaw Documentation</title>
+    <title>AgentSheduler / MiniClaw Codebase Report</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
     <header class="hero">
       <div class="hero__inner">
         <p class="eyebrow">Codebase Explorer</p>
-        <h1>MiniClaw Documentation</h1>
-        <p class="lede">
-          Read the generated report with Mermaid diagrams loaded from linked source files.
-        </p>
+        <h1>AgentSheduler / MiniClaw Report</h1>
+        <p class="lede">Static architecture report for <code>vii33/AgentSheduler</code>, with Mermaid diagrams loaded from linked source files.</p>
         <nav class="hero__links">
-          <a href="../miniclaw.md">Markdown source</a>
-          <a href="../diagrams/miniclaw-package.mmd">Package diagram source</a>
-          <a href="../diagrams/miniclaw-external-interactions.mmd">External interaction source</a>
-          <a href="../diagrams/miniclaw-internal-data-flow.mmd">Internal data-flow source</a>
-          <a href="../diagrams/miniclaw-data-model.mmd">Data-model source</a>
+          <a href="../agentscheduler.md">Markdown source</a>
+          <a href="../diagrams/agentscheduler-package.mmd">Package diagram</a>
+          <a href="../diagrams/agentscheduler-external-interactions.mmd">External interaction</a>
+          <a href="../diagrams/agentscheduler-internal-data-flow.mmd">Internal data-flow</a>
+          <a href="../diagrams/agentscheduler-data-model.mmd">Data model</a>
         </nav>
       </div>
     </header>
 
     <main class="layout">
       <aside class="panel panel--sticky">
-        <h2>View tips</h2>
+        <h2>Report facts</h2>
         <ul>
-          <li>Serve the repository with a static file server for best results.</li>
-          <li>This page is a static HTML view generated from the checked-in Markdown and Mermaid sources.</li>
-          <li>Use the source links above if you want the raw files.</li>
+          <li>Repository: <a href="https://github.com/vii33/AgentSheduler">vii33/AgentSheduler</a></li>
+          <li>Product name: <strong>MiniClaw</strong></li>
+          <li>Analyzed HEAD: <code>f81d7f7</code></li>
+          <li>Commit date: 2026-06-03</li>
         </ul>
+        <p class="callout">The GitHub repository name is misspelled as <code>AgentSheduler</code>. The codebase itself identifies as MiniClaw.</p>
       </aside>
 
       <section class="content">
         <article class="panel markdown-body">
-          <h1>MiniClaw Documentation</h1>
+          <h1>AgentSheduler / MiniClaw Codebase Report</h1>
 
-          <h2>Codebase purpose</h2>
-          <p>
-            MiniClaw is a lightweight, Markdown-first AI assistant runtime that stores identity, memory,
-            scheduled tasks, and session exports in plain files while using Opencode for interactive AI
-            sessions and automation.
-          </p>
+          <p>MiniClaw is a Markdown-configured Go scheduler for local automation and CLI-agent workflows. It reads cron-like task definitions, executes allowlisted scripts or supported agent CLIs, records run history in SQLite, and maintains file-based assistant memory artifacts.</p>
 
-          <h2>Technology profile</h2>
-          <p>
-            The codebase is mostly Markdown configuration and documentation, with JavaScript running on
-            Node.js for the polling scheduler, shell scripts for session export, YAML for cron-like task
-            definitions, JSON for runtime task state, Opencode as the AI/session platform, local filesystem
-            storage instead of a database, static HTML/CSS for published documentation, and GitHub Pages-style
-            deployment for the checked-in site.
-          </p>
+          <p>The project is written primarily in Go 1.25 with YAML configuration, SQLite via <code>modernc.org/sqlite</code>, shell scripting with <code>curl</code>/<code>jq</code>, Markdown documentation and memory files, and local CLI integrations for Opencode, GitHub Copilot CLI, Claude, Codex, and Pi. It is designed for local operation, Codespaces-friendly development, and filesystem-backed persistence rather than a hosted service.</p>
 
           <h2>High-level package diagram</h2>
-          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-package.mmd">Loading package diagram…</pre>
-          <p class="diagram-note"><a href="../diagrams/miniclaw-package.mmd">Open Mermaid source</a></p>
+          <pre class="mermaid" data-mermaid-src="../diagrams/agentscheduler-package.mmd">Loading package diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/agentscheduler-package.mmd">Open Mermaid source</a></p>
 
           <h2>High-level external interaction diagram</h2>
-          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-external-interactions.mmd">Loading external interaction diagram…</pre>
-          <p class="diagram-note"><a href="../diagrams/miniclaw-external-interactions.mmd">Open Mermaid source</a></p>
+          <pre class="mermaid" data-mermaid-src="../diagrams/agentscheduler-external-interactions.mmd">Loading external interaction diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/agentscheduler-external-interactions.mmd">Open Mermaid source</a></p>
 
           <h2>High-level internal data-flow diagram</h2>
-          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-internal-data-flow.mmd">Loading internal data-flow diagram…</pre>
-          <p class="diagram-note"><a href="../diagrams/miniclaw-internal-data-flow.mmd">Open Mermaid source</a></p>
+          <pre class="mermaid" data-mermaid-src="../diagrams/agentscheduler-internal-data-flow.mmd">Loading internal data-flow diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/agentscheduler-internal-data-flow.mmd">Open Mermaid source</a></p>
 
           <h2>High-level data-model diagram</h2>
-          <pre class="mermaid" data-mermaid-src="../diagrams/miniclaw-data-model.mmd">Loading data-model diagram…</pre>
-          <p class="diagram-note"><a href="../diagrams/miniclaw-data-model.mmd">Open Mermaid source</a></p>
+          <pre class="mermaid" data-mermaid-src="../diagrams/agentscheduler-data-model.mmd">Loading data-model diagram…</pre>
+          <p class="diagram-note"><a href="../diagrams/agentscheduler-data-model.mmd">Open Mermaid source</a></p>
 
-          <p class="source-link"><a href="../miniclaw.md">Open Markdown source</a></p>
+          <p class="source-link"><a href="../agentscheduler.md">Open full Markdown report</a></p>
 
-          <p>
-            This page is based on the generated documentation for
-            <a href="https://github.com/vii33/MiniClaw"><code>vii33/MiniClaw</code></a>,
-            using the current <code>main</code> branch structure and source files.
-          </p>
-
-          <h2>What MiniClaw is</h2>
-          <p>
-            MiniClaw is a lightweight, Markdown-first AI assistant built around
-            <a href="https://opencode.ai">Opencode</a>. Instead of using a database-heavy architecture,
-            it keeps most of its persistent state in plain files:
-          </p>
-          <ul>
-            <li>prompt and behavior files in the repo root</li>
-            <li>durable memory in <code>MEMORY.md</code></li>
-            <li>raw daily session exports in <code>memory/history/</code></li>
-            <li>weekly summaries in <code>memory/knowledge/</code></li>
-            <li>cron task definitions in <code>crons/tasks.yaml</code></li>
-            <li>runtime scheduler state in <code>.miniclaw/task-state.json</code></li>
-          </ul>
-          <p>
-            The project goal is to keep the assistant simple, inspectable, and easy to evolve with
-            normal file-based workflows.
-          </p>
-
-          <h2>Core architecture</h2>
-          <p>MiniClaw is organized around four main concerns:</p>
-          <ol>
-            <li>
-              <strong>Assistant identity and behavior</strong>
-              <ul>
-                <li><code>IDENTITY.md</code></li>
-                <li><code>AGENTS.md</code></li>
-                <li><code>SOUL.md</code></li>
-                <li><code>USER.md</code></li>
-                <li><code>TOOLS.md</code></li>
-              </ul>
-            </li>
-            <li>
-              <strong>Memory management</strong>
-              <ul>
-                <li><code>MEMORY.md</code> for always-loaded distilled memory</li>
-                <li><code>memory/history/YYYY-MM-DD.md</code> for raw daily history</li>
-                <li><code>memory/knowledge/weekly-YYYY-Www.md</code> for higher-level summaries</li>
-                <li><code>memory/facts.md</code> as a scratch pad</li>
-              </ul>
-            </li>
-            <li>
-              <strong>Automation</strong>
-              <ul>
-                <li><code>scripts/export-sessions.sh</code> exports sessions from Opencode</li>
-                <li><code>scripts/task-loop.js</code> polls for due tasks and executes them</li>
-                <li><code>crons/tasks.yaml</code> is the source of truth for scheduled work</li>
-                <li><code>.miniclaw/task-state.json</code> stores <code>last_run</code> and <code>last_error</code></li>
-              </ul>
-            </li>
-            <li>
-              <strong>Skill instructions</strong>
-              <ul>
-                <li><code>TOOLS.md</code> defines tool and skill usage guidance for the assistant</li>
-                <li><code>AGENTS.md</code> supplies the operating rules that those skills must follow</li>
-              </ul>
-            </li>
-          </ol>
-
-          <h2>Diagrams</h2>
-          <ul>
-            <li><a href="../diagrams/miniclaw-package.mmd">Package diagram source</a></li>
-            <li><a href="../diagrams/miniclaw-external-interactions.mmd">External interaction diagram source</a></li>
-            <li><a href="../diagrams/miniclaw-internal-data-flow.mmd">Internal data-flow diagram source</a></li>
-            <li><a href="../diagrams/miniclaw-data-model.mmd">Data-model diagram source</a></li>
-          </ul>
-
-          <h2>How the system works</h2>
-
-          <h3>1. Session export</h3>
-          <p>The export script:</p>
-          <ul>
-            <li>checks the Opencode health endpoint first</li>
-            <li>fetches sessions for a target day</li>
-            <li>writes a Markdown history file to <code>memory/history/YYYY-MM-DD.md</code></li>
-            <li>appends a <code>## Summary</code> placeholder for later analysis</li>
-          </ul>
-          <p>Actual API usage in the script is:</p>
-          <ul>
-            <li><code>GET /global/health</code></li>
-            <li><code>GET /experimental/session</code></li>
-            <li><code>GET /session/:id/message</code></li>
-          </ul>
-          <pre><code>./scripts/export-sessions.sh
-./scripts/export-sessions.sh --date 2026-03-07
-./scripts/export-sessions.sh --host 127.0.0.1 --port 4096</code></pre>
-
-          <h3>2. Scheduled task execution</h3>
-          <p>
-            The scheduler is implemented in <code>scripts/task-loop.js</code>. It is a polling loop,
-            not a system cron integration.
-          </p>
-          <p>Its runtime flow is:</p>
-          <ol>
-            <li>read <code>crons/tasks.yaml</code></li>
-            <li>parse and validate enabled tasks</li>
-            <li>read <code>.miniclaw/task-state.json</code></li>
-            <li>decide which tasks are due for the current minute</li>
-            <li>skip tasks that already ran in that exact minute slot</li>
-            <li>execute each due task</li>
-            <li>update runtime state on success or failure</li>
-          </ol>
-          <p>Supported task kinds:</p>
-          <ul>
-            <li><code>shell</code> — runs a restricted local command</li>
-            <li><code>opencode</code> — sends an instruction to <code>opencode run</code></li>
-          </ul>
-          <pre><code>node scripts/task-loop.js
-node scripts/task-loop.js --once
-node scripts/task-loop.js --once --dry-run --at 2026-03-07T23:15:00Z</code></pre>
-
-          <h3>3. Memory lifecycle</h3>
-          <p>MiniClaw intentionally separates memory into layers:</p>
+          <h2>Snapshot analyzed</h2>
           <table>
-            <thead>
-              <tr>
-                <th>Layer</th>
-                <th>Storage</th>
-                <th>Role</th>
-              </tr>
-            </thead>
             <tbody>
-              <tr>
-                <td>Distilled memory</td>
-                <td><code>MEMORY.md</code></td>
-                <td>Stable preferences, decisions, lessons</td>
-              </tr>
-              <tr>
-                <td>Raw daily history</td>
-                <td><code>memory/history/YYYY-MM-DD.md</code></td>
-                <td>Full day-level transcript record</td>
-              </tr>
-              <tr>
-                <td>Weekly knowledge</td>
-                <td><code>memory/knowledge/weekly-YYYY-Www.md</code></td>
-                <td>Cross-day summaries</td>
-              </tr>
+              <tr><th>Repository</th><td><a href="https://github.com/vii33/AgentSheduler"><code>vii33/AgentSheduler</code></a></td></tr>
+              <tr><th>HEAD</th><td><code>f81d7f7a50df758cbdb19b5ec1f3f59e9ef903a5</code></td></tr>
+              <tr><th>Commit date</th><td>2026-06-03</td></tr>
+              <tr><th>Module path</th><td><code>github.com/vii33/miniclaw</code></td></tr>
             </tbody>
           </table>
-          <p>
-            This keeps the always-loaded context small while preserving detailed history for later review.
-          </p>
 
-          <h2>Repository structure</h2>
-          <pre><code>MiniClaw/
+          <h2>What the system does</h2>
+          <p>MiniClaw is a local scheduler for automating assistant maintenance and agent-driven chores. Its core loop reads <code>crons/tasks.yaml</code>, validates enabled tasks, calculates due schedule slots, starts a run row in <code>miniclaw.db</code>, executes the configured action, records success or failure, and updates scheduler checkpoint state.</p>
+          <p>Supported task modes are deliberately split:</p>
+          <ul>
+            <li><code>shell</code> for allowlisted local commands such as <code>./scripts/export-sessions.sh</code>.</li>
+            <li><code>opencode</code> for <code>opencode run</code> instructions with default/fallback model handling.</li>
+            <li><code>copilot-cli</code>, <code>claude</code>, <code>codex</code>, and <code>pi-agent</code> for direct non-interactive CLI execution.</li>
+          </ul>
+          <p>That split is a good design choice. Treating agent invocations as structured binary calls instead of arbitrary shell strings is safer and easier to reason about.</p>
+
+          <h2>Repository layout</h2>
+          <pre><code>AgentSheduler/
 ├── AGENTS.md
-├── IDENTITY.md
 ├── MEMORY.md
 ├── README.md
-├── SOUL.md
-├── TOOLS.md
-├── USER.md
-├── crons/
-│   └── tasks.yaml
+├── cmd/task-loop/
+│   ├── main.go
+│   ├── main_test.go
+│   └── integration_test.go
+├── crons/tasks.yaml
 ├── docs/
-│   └── tasks-memory-architecture.md
+│   ├── memory-workflow.md
+│   └── task-scheduler-architecture.md
+├── go.mod
+├── go.sum
 ├── memory/
-│   ├── facts.md
-│   ├── history/
-│   └── knowledge/
-├── scripts/
-│   ├── export-sessions.sh
-│   └── task-loop.js
-└── .miniclaw/
-    └── task-state.json</code></pre>
+└── scripts/export-sessions.sh</code></pre>
 
-          <h2>Important files</h2>
+          <h2>Core runtime path</h2>
+          <ol>
+            <li><code>findRepoPaths</code> discovers the repository root and key runtime files.</li>
+            <li><code>openDB</code> opens SQLite, enables WAL, and applies migrations.</li>
+            <li><code>readTasks</code> unmarshals YAML, validates every task, defaults missing policies, and filters disabled tasks.</li>
+            <li><code>findDueRuns</code> evaluates schedules between the previous checkpoint and now.</li>
+            <li><code>insertRunningRun</code> creates a unique run row for duplicate prevention.</li>
+            <li><code>executeTask</code> dispatches to shell, Opencode, or another supported CLI adapter.</li>
+            <li><code>finishRun</code> records terminal status, duration, and sanitized errors.</li>
+            <li><code>writeLastChecked</code> advances the scheduler checkpoint.</li>
+          </ol>
 
-          <h3><code>AGENTS.md</code></h3>
-          <p>Defines the assistant's operating rules:</p>
-          <ul>
-            <li>startup loading order</li>
-            <li>memory update discipline</li>
-            <li>security boundaries</li>
-            <li>Opencode integration expectations</li>
-            <li>task execution rules</li>
-          </ul>
-
-          <h3><code>TOOLS.md</code></h3>
-          <p>Defines the assistant's tool and skill-instruction layer:</p>
-          <ul>
-            <li>when the assistant should use available tools</li>
-            <li>how shell and automation actions are constrained</li>
-            <li>what behaviors are expected when invoking capabilities</li>
-          </ul>
-
-          <h3><code>crons/tasks.yaml</code></h3>
-          <p>Defines scheduled jobs as YAML entries under the top-level <code>tasks:</code> list.</p>
-          <p>Current built-in tasks:</p>
-          <ul>
-            <li><code>daily-export</code></li>
-            <li><code>daily-analysis</code></li>
-            <li><code>weekly-review</code></li>
-          </ul>
-          <p>
-            The file also stores prompt text for <code>opencode</code> tasks, which means task behavior is
-            partly configuration-driven.
-          </p>
-
-          <h3><code>scripts/task-loop.js</code></h3>
-          <p>This is the active scheduler implementation today. Key behaviors include:</p>
-          <ul>
-            <li>custom task YAML parsing and validation</li>
-            <li>cron matching</li>
-            <li>duplicate-run protection per minute slot</li>
-            <li>model selection with fallback</li>
-            <li>shell command restrictions</li>
-            <li>state file updates</li>
-          </ul>
-          <p>
-            Notably, the backlog mentions a future Go rewrite, but the current implementation is JavaScript.
-          </p>
-
-          <h3><code>docs/tasks-memory-architecture.md</code></h3>
-          <p>This is the most complete internal design document in the MiniClaw repo. It explains:</p>
-          <ul>
-            <li>how tasks are stored</li>
-            <li>how runtime state is tracked</li>
-            <li>where outputs appear</li>
-            <li>why the project uses the Opencode HTTP interface</li>
-            <li>how the memory layers are intended to stay clean over time</li>
-          </ul>
-
-          <h2>Configuration</h2>
-          <p>MiniClaw is configured primarily through environment variables and local files.</p>
-          <p>Relevant environment variables:</p>
+          <h2>Task configuration model</h2>
           <table>
-            <thead>
-              <tr>
-                <th>Variable</th>
-                <th>Default</th>
-                <th>Purpose</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
             <tbody>
-              <tr>
-                <td><code>OPENCODE_HOST</code></td>
-                <td><code>127.0.0.1</code></td>
-                <td>Opencode host</td>
-              </tr>
-              <tr>
-                <td><code>OPENCODE_PORT</code></td>
-                <td><code>4096</code></td>
-                <td>Opencode port</td>
-              </tr>
-              <tr>
-                <td><code>OPENCODE_PASSWORD</code></td>
-                <td>unset</td>
-                <td>Optional basic-auth password</td>
-              </tr>
-              <tr>
-                <td><code>OPENCODE_USERNAME</code></td>
-                <td><code>opencode</code></td>
-                <td>Basic-auth username</td>
-              </tr>
-              <tr>
-                <td><code>OPENCODE_TASK_MODEL</code></td>
-                <td><code>zen/minimax2.5-free</code></td>
-                <td>Scheduler model override</td>
-              </tr>
-              <tr>
-                <td><code>TASK_LOOP_POLL_SECONDS</code></td>
-                <td><code>60</code></td>
-                <td>Scheduler poll interval</td>
-              </tr>
+              <tr><td><code>id</code></td><td>Unique stable task identifier.</td></tr>
+              <tr><td><code>enabled</code></td><td>Optional boolean; missing means enabled.</td></tr>
+              <tr><td><code>schedule</code></td><td>Five-field cron expression.</td></tr>
+              <tr><td><code>missed</code></td><td><code>skip</code>, <code>run-latest</code>, or <code>catch-up</code>; missing means <code>run-latest</code>.</td></tr>
+              <tr><td><code>kind</code></td><td><code>shell</code>, <code>opencode</code>, <code>copilot-cli</code>, <code>claude</code>, <code>codex</code>, or <code>pi-agent</code>.</td></tr>
+              <tr><td><code>command</code></td><td>Required for shell tasks.</td></tr>
+              <tr><td><code>instruction</code></td><td>Required for agent tasks.</td></tr>
+              <tr><td><code>model</code></td><td>Optional task-level model override.</td></tr>
             </tbody>
           </table>
-          <p>
-            Secrets are expected in a repo-root <code>.env</code> file, with <code>.env.example</code>
-            documenting the expected keys.
-          </p>
 
-          <h2>Current implementation status</h2>
-          <p>
-            Based on <code>implementation-backlog.md</code>, MiniClaw is partially implemented.
-          </p>
-          <p>Working pieces:</p>
+          <h2>Checked-in tasks</h2>
           <ul>
-            <li>file-based memory layout</li>
-            <li>session export script</li>
-            <li>poll-based task scheduler</li>
-            <li>configurable model selection</li>
-          </ul>
-          <p>Still listed as incomplete or needing hardening:</p>
-          <ul>
-            <li>session chat loop</li>
-            <li>stronger scheduler locking and tests</li>
-            <li>richer run logging and observability</li>
-            <li>better handling of large or invalid task outputs</li>
-            <li>possible future Go scheduler rewrite</li>
-            <li>web UI</li>
+            <li><code>daily-export</code> runs <code>./scripts/export-sessions.sh</code> at 23:00 UTC.</li>
+            <li><code>daily-analysis</code> asks Opencode to summarize the current day into <code>MEMORY.md</code> and that day's history file at 23:15 UTC.</li>
+            <li><code>weekly-review</code> asks Opencode to write a weekly summary every Monday at 09:00 UTC.</li>
           </ul>
 
-          <h2>Practical summary</h2>
-          <p>MiniClaw is best understood as a small assistant runtime built from plain files plus a scheduler:</p>
+          <h2>Scheduling behavior</h2>
+          <p>The scheduler uses minute-level cron matching. It supports <code>skip</code>, <code>run-latest</code>, and <code>catch-up</code> missed-run policies. The right default is <code>run-latest</code>; blindly catching up every missed agent prompt after a week offline would be expensive and annoying.</p>
+
+          <h2>Runtime storage</h2>
+          <p>MiniClaw writes generated operational state outside the task YAML. <code>miniclaw.db</code> stores <code>task_runs</code> and <code>scheduler_state</code>, while <code>task-loop.lock</code> prevents two continuous schedulers from running concurrently and recovers stale locks when the recorded PID is gone.</p>
+          <p>The SQLite choice is sensible. JSON state files are tempting for tiny tools, but SQLite gives uniqueness, indexes, and queryable status without inventing a bad database badly.</p>
+
+          <h2>Execution and safety boundaries</h2>
+          <p>Shell tasks are split into argv-like words and must start with an allowed prefix such as <code>./scripts/</code>, <code>bash scripts/</code>, or <code>go run ./cmd/</code>. Agent tasks use direct binary invocations for Opencode, Copilot, Claude, Codex, and Pi.</p>
+          <p>The shell allowlist is useful but prefix-based allowlists are not a complete sandbox. That is acceptable for a local personal automation repo, but it would be a stupid foundation for a multi-user hosted scheduler without much stronger isolation.</p>
+
+          <h2>Memory workflow</h2>
+          <p>The memory workflow is file-based: <code>MEMORY.md</code> stores distilled durable facts, <code>memory/history/YYYY-MM-DD.md</code> stores raw daily exports, <code>memory/knowledge/weekly-YYYY-Www.md</code> stores weekly or topical summaries, and <code>memory/facts.md</code> is a lightweight scratchpad.</p>
+
+          <h2>How to run it</h2>
+          <pre><code># Continuous loop; default poll interval is five minutes
+go run ./cmd/task-loop
+
+# One scheduler pass
+go run ./cmd/task-loop --once
+
+# Dry-run a specific instant
+go run ./cmd/task-loop --once --dry-run --at 2026-03-07T23:15:00Z
+
+# Run tests
+go test ./...</code></pre>
+
+          <h2>Notable strengths</h2>
           <ul>
-            <li>Markdown files define identity, memory, and user context</li>
-            <li>Opencode supplies chat and session infrastructure</li>
-            <li>shell and Opencode tasks automate export and summarization</li>
-            <li>scheduler state is intentionally lightweight</li>
+            <li>Go scheduler is straightforward and inspectable.</li>
+            <li>SQLite run history is much better than ad hoc JSON for scheduler correctness.</li>
+            <li>Agent invocation is separated by adapters rather than shell-concatenated command strings.</li>
+            <li>Missed-run policy is explicit per task.</li>
+            <li>The lock file has stale-lock recovery.</li>
           </ul>
-          <p>The design favors transparency and hackability over heavy infrastructure.</p>
+
+          <h2>Risks and improvement opportunities</h2>
+          <ul>
+            <li>The repository URL/name typo (<code>AgentSheduler</code>) is embarrassing and will keep leaking into links.</li>
+            <li>The README badge points to <code>vii33/MiniClaw</code>, while the analyzed repository is <code>vii33/AgentSheduler</code>.</li>
+            <li>Prefix-based shell command allowlisting is a local convenience, not a security boundary.</li>
+            <li>The scheduler has no web UI or notification layer; failures are only useful if someone queries or watches them.</li>
+          </ul>
         </article>
       </section>
     </main>
 
     <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 
-      const diagramBlocks = document.querySelectorAll("pre.mermaid[data-mermaid-src]");
-      await Promise.all(Array.from(diagramBlocks).map(async (block) => {
+      mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+      const blocks = Array.from(document.querySelectorAll('pre.mermaid[data-mermaid-src]'));
+      await Promise.all(blocks.map(async (block) => {
+        const source = block.getAttribute('data-mermaid-src');
         try {
-          const response = await fetch(block.dataset.mermaidSrc);
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-          }
+          const response = await fetch(source);
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
           block.textContent = await response.text();
         } catch (error) {
-          block.textContent = `Unable to load Mermaid diagram from ${block.dataset.mermaidSrc}: ${error.message}`;
-          block.classList.add("mermaid--error");
+          block.textContent = `Could not load ${source}: ${error.message}`;
         }
       }));
-
-      mermaid.initialize({ startOnLoad: false, theme: "dark", securityLevel: "strict" });
-      await mermaid.run({ querySelector: "pre.mermaid:not(.mermaid--error)" });
+      await mermaid.run({ nodes: blocks });
     </script>
   </body>
 </html>
