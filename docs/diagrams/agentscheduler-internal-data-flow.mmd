@@ -1,11 +1,11 @@
 flowchart TB
-  yaml[crons/tasks.yaml]
+  yaml[/crons/tasks.yaml/]
   parser[Task parser + validator]
   state[(SQLite scheduler_state<br/>last_checked_at)]
-  due[Due-slot calculator<br/>skip/run-latest/catch-up]
+  due{{Due-slot calculator<br/>skip/run-latest/catch-up}}
   runs[(SQLite task_runs)]
-  exec[Task executor]
-  outputs[Filesystem memory/history/knowledge]
+  exec[[Task executor]]
+  outputs[(Filesystem memory/history/knowledge)]
 
   yaml --> parser
   parser --> due
@@ -15,3 +15,15 @@ flowchart TB
   exec -->|status, duration, error| runs
   exec --> outputs
   due -->|advance checkpoint| state
+
+  classDef config fill:#fef3c7,stroke:#d97706,color:#0f172a
+  classDef logic fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  classDef decision fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef execution fill:#fee2e2,stroke:#dc2626,color:#0f172a
+  classDef storage fill:#ccfbf1,stroke:#0f766e,color:#0f172a
+
+  class yaml config
+  class parser logic
+  class due decision
+  class exec execution
+  class state,runs,outputs storage

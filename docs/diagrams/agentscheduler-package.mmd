@@ -1,9 +1,9 @@
 flowchart TB
   repo[MiniClaw Repository]
-  scheduler[cmd/task-loop<br/>Go scheduler]
-  config[crons/tasks.yaml<br/>Task configuration]
-  memory[Memory Files<br/>MEMORY.md + memory/]
-  scripts[scripts/export-sessions.sh]
+  scheduler([cmd/task-loop<br/>Go scheduler])
+  config[/crons/tasks.yaml<br/>Task configuration/]
+  memory[(Memory Files<br/>MEMORY.md + memory/)]
+  scripts[[scripts/export-sessions.sh]]
   docs[README + docs/]
   runtime[(miniclaw.db<br/>task-loop.lock)]
 
@@ -13,3 +13,15 @@ flowchart TB
   repo --> scripts
   repo --> docs
   scheduler --> runtime
+
+  classDef source fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  classDef runtime fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef config fill:#fef3c7,stroke:#d97706,color:#0f172a
+  classDef docs fill:#ede9fe,stroke:#7c3aed,color:#0f172a
+  classDef executable fill:#fee2e2,stroke:#dc2626,color:#0f172a
+
+  class repo source
+  class scheduler,scripts executable
+  class config config
+  class memory,runtime runtime
+  class docs docs
