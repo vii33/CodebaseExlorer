@@ -1,8 +1,8 @@
 # AgentSheduler / MiniClaw Codebase Report
 
-MiniClaw is a Markdown-configured Go scheduler for local automation and CLI-agent workflows. It reads cron-like task definitions, executes allowlisted scripts or supported agent CLIs, records run history in SQLite, and maintains file-based assistant memory artifacts.
+## Management summary
 
-The project is written primarily in Go 1.25 with YAML configuration, SQLite via `modernc.org/sqlite`, shell scripting with `curl`/`jq`, Markdown documentation and memory files, and local CLI integrations for Opencode, GitHub Copilot CLI, Claude, Codex, and Pi. It is designed for local operation, Codespaces-friendly development, and filesystem-backed persistence rather than a hosted service.
+MiniClaw is a Markdown-configured Go scheduler for local automation and CLI-agent workflows. It reads cron-like task definitions, executes allowlisted scripts or supported agent CLIs, records run history in SQLite, and maintains file-based assistant memory artifacts.
 
 ## High-level package diagram
 
@@ -11,10 +11,10 @@ The project is written primarily in Go 1.25 with YAML configuration, SQLite via 
 ```mermaid
 flowchart TB
   repo[MiniClaw Repository]
-  scheduler[cmd/task-loop<br/>Go scheduler]
-  config[crons/tasks.yaml<br/>Task configuration]
-  memory[Memory Files<br/>MEMORY.md + memory/]
-  scripts[scripts/export-sessions.sh]
+  scheduler([cmd/task-loop<br/>Go scheduler])
+  config[/crons/tasks.yaml<br/>Task configuration/]
+  memory[(Memory Files<br/>MEMORY.md + memory/)]
+  scripts[[scripts/export-sessions.sh]]
   docs[README + docs/]
   runtime[(miniclaw.db<br/>task-loop.lock)]
 
@@ -24,6 +24,18 @@ flowchart TB
   repo --> scripts
   repo --> docs
   scheduler --> runtime
+
+  classDef source fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  classDef runtime fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef config fill:#fef3c7,stroke:#d97706,color:#0f172a
+  classDef docs fill:#ede9fe,stroke:#7c3aed,color:#0f172a
+  classDef executable fill:#fee2e2,stroke:#dc2626,color:#0f172a
+
+  class repo source
+  class scheduler,scripts executable
+  class config config
+  class memory,runtime runtime
+  class docs docs
 ```
 
 ## High-level external interaction diagram
@@ -32,13 +44,13 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-  user[Local operator]
-  github[GitHub / Codespaces]
-  miniclaw[MiniClaw Scheduler]
-  shell[Allowlisted local scripts]
-  agents[Agent CLIs<br/>Opencode, Copilot, Claude, Codex, Pi]
-  opencode[Opencode HTTP API]
-  fs[Local filesystem]
+  user([Local operator])
+  github[[GitHub / Codespaces]]
+  miniclaw{{MiniClaw Scheduler}}
+  shell[[Allowlisted local scripts]]
+  agents[/Agent CLIs<br/>Opencode, Copilot, Claude, Codex, Pi/]
+  opencode[(Opencode HTTP API)]
+  fs[(Local filesystem)]
 
   user -->|runs go task-loop| miniclaw
   github -->|hosts source/dev env| miniclaw
@@ -46,6 +58,22 @@ flowchart LR
   miniclaw -->|non-interactive prompts| agents
   shell -->|exports sessions| opencode
   miniclaw -->|reads/writes| fs
+
+  classDef actor fill:#e0f2fe,stroke:#0284c7,color:#0f172a
+  classDef host fill:#ede9fe,stroke:#7c3aed,color:#0f172a
+  classDef core fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef localTool fill:#fef3c7,stroke:#d97706,color:#0f172a
+  classDef agent fill:#fae8ff,stroke:#c026d3,color:#0f172a
+  classDef external fill:#fee2e2,stroke:#dc2626,color:#0f172a
+  classDef storage fill:#ccfbf1,stroke:#0f766e,color:#0f172a
+
+  class user actor
+  class github host
+  class miniclaw core
+  class shell localTool
+  class agents agent
+  class opencode external
+  class fs storage
 ```
 
 ## High-level internal data-flow diagram
@@ -54,13 +82,13 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  yaml[crons/tasks.yaml]
+  yaml[/crons/tasks.yaml/]
   parser[Task parser + validator]
   state[(SQLite scheduler_state<br/>last_checked_at)]
-  due[Due-slot calculator<br/>skip/run-latest/catch-up]
+  due{{Due-slot calculator<br/>skip/run-latest/catch-up}}
   runs[(SQLite task_runs)]
-  exec[Task executor]
-  outputs[Filesystem memory/history/knowledge]
+  exec[[Task executor]]
+  outputs[(Filesystem memory/history/knowledge)]
 
   yaml --> parser
   parser --> due
@@ -70,6 +98,18 @@ flowchart TB
   exec -->|status, duration, error| runs
   exec --> outputs
   due -->|advance checkpoint| state
+
+  classDef config fill:#fef3c7,stroke:#d97706,color:#0f172a
+  classDef logic fill:#dbeafe,stroke:#2563eb,color:#0f172a
+  classDef decision fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef execution fill:#fee2e2,stroke:#dc2626,color:#0f172a
+  classDef storage fill:#ccfbf1,stroke:#0f766e,color:#0f172a
+
+  class yaml config
+  class parser logic
+  class due decision
+  class exec execution
+  class state,runs,outputs storage
 ```
 
 ## High-level data-model diagram
@@ -164,6 +204,18 @@ AgentSheduler/
 └── scripts/
     └── export-sessions.sh
 ```
+
+## Codebase metrics
+
+Measured at analyzed HEAD `f81d7f7`: 2,554 nonblank lines across tracked text files, excluding Git metadata and generated runtime artifacts. The table intentionally focuses on files that explain the system end-to-end rather than blindly listing the largest files.
+
+| File | Why it matters | Nonblank LOC | Share of codebase |
+|---|---|---:|---:|
+| `cmd/task-loop/main.go` | Scheduler entry point, task parsing, due-run logic, storage, locking, and CLI dispatch. | 927 | 36.3% |
+| `cmd/task-loop/integration_test.go` | End-to-end safety net for scheduler execution, failure recording, and runtime behavior. | 293 | 11.5% |
+| `cmd/task-loop/main_test.go` | Unit coverage for schedule math, validation, placeholders, and adapter behavior. | 189 | 7.4% |
+| `scripts/export-sessions.sh` | Bridges the scheduler to Opencode session history used by the memory workflow. | 188 | 7.4% |
+| `crons/tasks.yaml` | The small but central operational contract: what runs, when it runs, and which agent mode it uses. | 26 | 1.0% |
 
 ## Core runtime path
 
@@ -274,6 +326,14 @@ go test ./...
 - Generated `miniclaw.db` and `task-loop.lock` are machine-managed and should not be hand-edited.
 - Secrets belong in `.env`, not Markdown memory files.
 
+## Things that caught attention
+
+- `cmd/task-loop/main.go` carries a lot of responsibility: cron parsing, persistence, locking, execution dispatch, placeholder expansion, and Opencode model fallback. That is acceptable for a compact local tool; it would become a maintenance smell if MiniClaw grows a UI, API, or plugin system.
+- `crons/tasks.yaml` is tiny but decisive. The whole product behavior is effectively declared there, so documentation and reviews should treat it as an operations file, not just sample config.
+- The Opencode path has special behavior around preferred and fallback model names. That is helpful for resilience, but unusual enough that it deserves to stay visible in the runtime documentation.
+- `scripts/export-sessions.sh` depends on a local Opencode HTTP server plus `curl` and `jq`. That is pragmatic, but it creates an obvious failure mode: the scheduler can be healthy while memory export is dead because the external local service is not running.
+- The shell allowlist is prefix-based. Fine for a personal laptop scheduler; a stupid idea as a security boundary for a multi-user or hosted service.
+
 ## Notable strengths
 
 - Go scheduler is straightforward and inspectable.
@@ -290,3 +350,13 @@ go test ./...
 - Prefix-based shell command allowlisting is a local convenience, not a security boundary.
 - The scheduler has no web UI or notification layer; failures are only useful if someone queries or watches them.
 - Agent task costs and side effects need operational guardrails if this grows beyond a personal tool.
+
+## Technical stack and runtime specifications
+
+- **Primary language:** Go 1.25.
+- **Configuration format:** YAML task definitions in `crons/tasks.yaml`.
+- **Persistence:** SQLite via `modernc.org/sqlite`; generated `miniclaw.db` and `task-loop.lock`.
+- **Automation scripts:** Shell scripts, with `curl` and `jq` for Opencode export.
+- **Agent integrations:** Opencode, GitHub Copilot CLI, Claude, Codex, and Pi.
+- **Documentation and memory:** Markdown files in the repository root, `docs/`, and `memory/`.
+- **Runtime posture:** Local-first, filesystem-backed, and Codespaces-friendly; not a hosted multi-user service.

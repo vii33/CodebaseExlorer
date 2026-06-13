@@ -38,9 +38,8 @@
         <article class="panel markdown-body">
           <h1>AgentSheduler / MiniClaw Codebase Report</h1>
 
+          <h2>Management summary</h2>
           <p>MiniClaw is a Markdown-configured Go scheduler for local automation and CLI-agent workflows. It reads cron-like task definitions, executes allowlisted scripts or supported agent CLIs, records run history in SQLite, and maintains file-based assistant memory artifacts.</p>
-
-          <p>The project is written primarily in Go 1.25 with YAML configuration, SQLite via <code>modernc.org/sqlite</code>, shell scripting with <code>curl</code>/<code>jq</code>, Markdown documentation and memory files, and local CLI integrations for Opencode, GitHub Copilot CLI, Claude, Codex, and Pi. It is designed for local operation, Codespaces-friendly development, and filesystem-backed persistence rather than a hosted service.</p>
 
           <h2>High-level package diagram</h2>
           <pre class="mermaid" data-mermaid-src="../diagrams/agentscheduler-package.mmd">Loading package diagram…</pre>
@@ -97,6 +96,20 @@
 ├── go.sum
 ├── memory/
 └── scripts/export-sessions.sh</code></pre>
+
+
+          <h2>Codebase metrics</h2>
+          <p>Measured at analyzed HEAD <code>f81d7f7</code>: 2,554 nonblank lines across tracked text files, excluding Git metadata and generated runtime artifacts. This table focuses on files that explain the system end-to-end rather than blindly listing the largest files.</p>
+          <table>
+            <thead><tr><th>File</th><th>Why it matters</th><th>Nonblank LOC</th><th>Share</th></tr></thead>
+            <tbody>
+              <tr><td><code>cmd/task-loop/main.go</code></td><td>Scheduler entry point, task parsing, due-run logic, storage, locking, and CLI dispatch.</td><td>927</td><td>36.3%</td></tr>
+              <tr><td><code>cmd/task-loop/integration_test.go</code></td><td>End-to-end safety net for scheduler execution, failure recording, and runtime behavior.</td><td>293</td><td>11.5%</td></tr>
+              <tr><td><code>cmd/task-loop/main_test.go</code></td><td>Unit coverage for schedule math, validation, placeholders, and adapter behavior.</td><td>189</td><td>7.4%</td></tr>
+              <tr><td><code>scripts/export-sessions.sh</code></td><td>Bridges the scheduler to Opencode session history used by the memory workflow.</td><td>188</td><td>7.4%</td></tr>
+              <tr><td><code>crons/tasks.yaml</code></td><td>The small but central operational contract: what runs, when it runs, and which agent mode it uses.</td><td>26</td><td>1.0%</td></tr>
+            </tbody>
+          </table>
 
           <h2>Core runtime path</h2>
           <ol>
@@ -159,6 +172,16 @@ go run ./cmd/task-loop --once --dry-run --at 2026-03-07T23:15:00Z
 # Run tests
 go test ./...</code></pre>
 
+
+          <h2>Things that caught attention</h2>
+          <ul>
+            <li><code>cmd/task-loop/main.go</code> carries a lot of responsibility: cron parsing, persistence, locking, execution dispatch, placeholder expansion, and Opencode model fallback. That is acceptable for a compact local tool; it would become a maintenance smell if MiniClaw grows a UI, API, or plugin system.</li>
+            <li><code>crons/tasks.yaml</code> is tiny but decisive. The whole product behavior is effectively declared there, so documentation and reviews should treat it as an operations file, not just sample config.</li>
+            <li>The Opencode path has special behavior around preferred and fallback model names. That is helpful for resilience, but unusual enough that it deserves to stay visible in the runtime documentation.</li>
+            <li><code>scripts/export-sessions.sh</code> depends on a local Opencode HTTP server plus <code>curl</code> and <code>jq</code>. That is pragmatic, but it creates an obvious failure mode: the scheduler can be healthy while memory export is dead because the external local service is not running.</li>
+            <li>The shell allowlist is prefix-based. Fine for a personal laptop scheduler; a stupid idea as a security boundary for a multi-user or hosted service.</li>
+          </ul>
+
           <h2>Notable strengths</h2>
           <ul>
             <li>Go scheduler is straightforward and inspectable.</li>
@@ -174,6 +197,17 @@ go test ./...</code></pre>
             <li>The README badge points to <code>vii33/MiniClaw</code>, while the analyzed repository is <code>vii33/AgentSheduler</code>.</li>
             <li>Prefix-based shell command allowlisting is a local convenience, not a security boundary.</li>
             <li>The scheduler has no web UI or notification layer; failures are only useful if someone queries or watches them.</li>
+          </ul>
+
+          <h2>Technical stack and runtime specifications</h2>
+          <ul>
+            <li><strong>Primary language:</strong> Go 1.25.</li>
+            <li><strong>Configuration format:</strong> YAML task definitions in <code>crons/tasks.yaml</code>.</li>
+            <li><strong>Persistence:</strong> SQLite via <code>modernc.org/sqlite</code>; generated <code>miniclaw.db</code> and <code>task-loop.lock</code>.</li>
+            <li><strong>Automation scripts:</strong> Shell scripts, with <code>curl</code> and <code>jq</code> for Opencode export.</li>
+            <li><strong>Agent integrations:</strong> Opencode, GitHub Copilot CLI, Claude, Codex, and Pi.</li>
+            <li><strong>Documentation and memory:</strong> Markdown files in the repository root, <code>docs/</code>, and <code>memory/</code>.</li>
+            <li><strong>Runtime posture:</strong> Local-first, filesystem-backed, and Codespaces-friendly; not a hosted multi-user service.</li>
           </ul>
         </article>
       </section>

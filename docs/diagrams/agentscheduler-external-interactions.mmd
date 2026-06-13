@@ -1,11 +1,11 @@
 flowchart LR
-  user[Local operator]
-  github[GitHub / Codespaces]
-  miniclaw[MiniClaw Scheduler]
-  shell[Allowlisted local scripts]
-  agents[Agent CLIs<br/>Opencode, Copilot, Claude, Codex, Pi]
-  opencode[Opencode HTTP API]
-  fs[Local filesystem]
+  user([Local operator])
+  github[[GitHub / Codespaces]]
+  miniclaw{{MiniClaw Scheduler}}
+  shell[[Allowlisted local scripts]]
+  agents[/Agent CLIs<br/>Opencode, Copilot, Claude, Codex, Pi/]
+  opencode[(Opencode HTTP API)]
+  fs[(Local filesystem)]
 
   user -->|runs go task-loop| miniclaw
   github -->|hosts source/dev env| miniclaw
@@ -13,3 +13,19 @@ flowchart LR
   miniclaw -->|non-interactive prompts| agents
   shell -->|exports sessions| opencode
   miniclaw -->|reads/writes| fs
+
+  classDef actor fill:#e0f2fe,stroke:#0284c7,color:#0f172a
+  classDef host fill:#ede9fe,stroke:#7c3aed,color:#0f172a
+  classDef core fill:#dcfce7,stroke:#16a34a,color:#0f172a
+  classDef localTool fill:#fef3c7,stroke:#d97706,color:#0f172a
+  classDef agent fill:#fae8ff,stroke:#c026d3,color:#0f172a
+  classDef external fill:#fee2e2,stroke:#dc2626,color:#0f172a
+  classDef storage fill:#ccfbf1,stroke:#0f766e,color:#0f172a
+
+  class user actor
+  class github host
+  class miniclaw core
+  class shell localTool
+  class agents agent
+  class opencode external
+  class fs storage
